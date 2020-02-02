@@ -12,9 +12,22 @@ Install-Module -Name AzureRM.BootStrapper -Force
 Get-AzureRMProfile -Update
 Use-AzureRmProfile -Profile 2019-03-01-hybrid -Force
 Install-Module -Name AzureStack -RequiredVersion 1.8.0
+function getfile($url, $filename) {
+    $wc = New-Object System.Net.WebClient
+    try {
+        $wc.DownloadFile($url, $filename)
+    }
+    catch [System.Net.WebException] {
+        Write-Host("Cannot download $url")
+    }
+    finally {
+        $wc.Dispose()
+    }
+}
 
 cd \
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-invoke-webrequest https://github.com/Azure/AzureStack-Tools/archive/master.zip -OutFile master.zip
+$url = "https://github.com/Azure/AzureStack-Tools/archive/master.zip"
+$filename = "master.zip"
+getfile $url $filename
 expand-archive master.zip -DestinationPath . -Force
 cd AzureStack-Tools-master
