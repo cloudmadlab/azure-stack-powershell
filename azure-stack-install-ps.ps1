@@ -25,9 +25,9 @@ function getfile($url, $filename) {
     }
 }
 
-cd \
+Set-Location \
 $url = "https://github.com/Azure/AzureStack-Tools/archive/master.zip"
 $filename = "master.zip"
 getfile $url $filename
 expand-archive master.zip -DestinationPath . -Force
-cd AzureStack-Tools-master
+Set-Location AzureStack-Tools-master
